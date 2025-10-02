@@ -9,7 +9,7 @@ const cors = require("cors");
 const app = express();
 
 //definisco la porta
-const port = 3000
+const port = process.env.PORT
 
 //importo router
 const productRouter = require("./routers/productRouter.js")
