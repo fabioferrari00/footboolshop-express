@@ -1,0 +1,33 @@
+
+//importo express
+const express = require("express");
+
+//importo cors
+const cors = require("cors");
+
+//creo instanza app attraverso express
+const app = express();
+
+//definisco la porta
+const port = 3000
+
+//importo router
+const productRouter = require("./routers/productRouter.js")
+
+//dico ad express di utilizzare public
+app.use(express.static('public'));
+
+app.use(express.json());
+
+//creo la rotta base
+app.get("/", (req, res) => {
+  res.send("Rotta base del sito")
+})
+
+//dico all'app di utilizzare il router
+app.use("/products", productRouter);
+
+//dico all'app di rimanere in ascolto
+app.listen(port, () => {
+  console.log(`Server in ascolto alla porta: ${port}`)
+})
