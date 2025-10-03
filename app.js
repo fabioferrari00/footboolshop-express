@@ -32,5 +32,5 @@ app.use("/products", productRouter);
 
 //dico all'app di rimanere in ascolto
 app.listen(port, () => {
-    console.log(`Server in ascolto alla porta: ${port}`)
+    console.log(`Server in ascolto alla porta: ${process.env.PORT}`)
 })
