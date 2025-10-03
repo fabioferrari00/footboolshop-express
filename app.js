@@ -1,9 +1,11 @@
-
 //importo express
 const express = require("express");
 
 //importo cors
 const cors = require("cors");
+
+//importo il dotenv
+require("dotenv").config();
 
 //creo instanza app attraverso express
 const app = express();

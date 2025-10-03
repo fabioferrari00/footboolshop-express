@@ -1,6 +1,8 @@
 //importo mysql2
 const mysql = require("mysql2");
 
+require("dotenv").config();
+
 //creo la connessione
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
