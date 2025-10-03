@@ -21,7 +21,7 @@ app.use(express.json());
 
 //creo la rotta base
 app.get("/", (req, res) => {
-  res.send("Rotta base del sito")
+    res.send("Rotta base del sito")
 })
 
 //dico all'app di utilizzare il router
@@ -29,5 +29,5 @@ app.use("/products", productRouter);
 
 //dico all'app di rimanere in ascolto
 app.listen(port, () => {
-  console.log(`Server in ascolto alla porta: ${port}`)
+    console.log(`Server in ascolto nella porta: ${process.env.PORT}`)
 })
