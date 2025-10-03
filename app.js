@@ -4,9 +4,6 @@ const express = require("express");
 //importo cors
 const cors = require("cors");
 
-//importo il dotenv
-require("dotenv").config();
-
 //creo instanza app attraverso express
 const app = express();
 
@@ -27,7 +24,7 @@ app.get("/", (req, res) => {
 })
 
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: process.env.FE_APP
 }));
 
 //dico all'app di utilizzare il router
