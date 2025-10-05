@@ -1,22 +1,30 @@
 const connection = require("../data/db.js");
 
-//index
+// index tutti i prodotti con il nome squadra
 const index = (req, res) => {
-    const sql = "SELECT * FROM products";
+    const sql = `
+        SELECT p.*, t.team_name
+        FROM products p
+        JOIN teams t ON t.products_id = p.id
+    `;
 
     connection.query(sql, (err, results) => {
         if (err) {
             return res.status(500).json({ error: `Errore nella query: ${err}` })
         }
-
         res.send(results);
     })
 }
 
-//show per id 
+// show singolo prodotto con il nome squadra
 const show = (req, res) => {
     const id = req.params.id;
-    const sql = "SELECT * FROM products WHERE id = ?";
+    const sql = `
+        SELECT p.*, t.team_name
+        FROM products p
+        LEFT JOIN teams t ON t.products_id = p.id
+        WHERE p.id = ?
+    `;
 
     connection.query(sql, [id], (err, results) => {
         if (err) {
@@ -26,7 +34,6 @@ const show = (req, res) => {
             return res.status(404).json({ error: "Prodotto non trovato" });
         }
         res.send(results[0]);
-
     })
 }
 
