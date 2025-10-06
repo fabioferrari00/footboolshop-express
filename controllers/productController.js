@@ -20,9 +20,10 @@ const index = (req, res) => {
 const show = (req, res) => {
     const id = req.params.id;
     const sql = `
-        SELECT p.*, t.team_name
+         SELECT p.*, t.team_name, s.size
         FROM products p
         LEFT JOIN teams t ON t.products_id = p.id
+		LEFT JOIN sizes s ON s.products_id = p.id
         WHERE p.id = ?
     `;
 
