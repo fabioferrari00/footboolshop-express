@@ -46,14 +46,16 @@ const storeOrder = (req, res) => {
 
 
     //recupero i dati della form
-    const { status,
+    const {
+        status,
         total_price,
         user_name,
         user_mail,
         user_phone,
         user_surname,
         user_city,
-        user_address, } = req.body;
+        user_address,
+    } = req.body;
 
     //controllo che i dati vengano inseriti
     if (user_name == "" || user_mail == "" || user_phone == "" || user_surname == "" || user_city == "" || user_address == "" || total_price == 0) return res.status(500).json({ error: "Riempi tutti i campi" });
@@ -63,7 +65,7 @@ const storeOrder = (req, res) => {
     const sql = "INSERT INTO orders (status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
     //eseguo la query
-    connection.query(sql, [status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address,], (err, result) => {
+    connection.query(sql, [status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address, ], (err, result) => {
         if (err) return res.status(500).json({ error: `Errore nella query di inserimento ordine: ${err}` });
 
         res.status(201).json({ result: true, message: `Inserimento avvenuto con successo` });
@@ -71,8 +73,30 @@ const storeOrder = (req, res) => {
 
 }
 
+// ricerca prodotti per nome squadra
+const search = (req, res) => {
+    const search = req.query.search || "";
+
+    const sql = `
+      SELECT p.*, t.team_name, s.size
+      FROM products p
+      JOIN teams t ON t.products_id = p.id
+      JOIN sizes s ON s.products_id = p.id
+      WHERE t.team_name LIKE ?
+    `;
+
+    connection.query(sql, [`%${search}%`], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: `Errore nella query: ${err}` });
+        }
+        res.json(results);
+    });
+};
+
+
 module.exports = {
     index,
     show,
-    storeOrder
+    storeOrder,
+    search
 }
