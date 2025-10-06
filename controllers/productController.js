@@ -3,9 +3,10 @@ const connection = require("../data/db.js");
 // index tutti i prodotti con il nome squadra
 const index = (req, res) => {
     const sql = `
-        SELECT p.*, t.team_name
+        SELECT p.*, t.team_name, s.size
         FROM products p
         JOIN teams t ON t.products_id = p.id
+        JOIN sizes s ON s.products_id = p.id
     `;
 
     connection.query(sql, (err, results) => {
