@@ -14,6 +14,9 @@ router.get("/", productController.index);
 //show by id 
 router.get("/:id", productController.show)
 
+//storeOrder
+router.post("/add-order", productController.storeOrder)
+
 
 
 module.exports = router;
