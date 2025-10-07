@@ -1,12 +1,6 @@
 const connection = require("../data/db.js");
 
-//store ordini
 const storeOrder = (req, res) => {
-
-
-
-
-    //recupero i dati della form
     let {
         status,
         total_price,
@@ -16,13 +10,12 @@ const storeOrder = (req, res) => {
         user_surname,
         user_city,
         user_address,
+        items = []
     } = req.body;
 
-    //  rimuovo spazi laterali dai campi stringa
-    function clean(value) {
-        return typeof value === "string" ? value.trim() : "";
-    }
-
+    // pulizia spazi solo latterale
+    const clean = v => (typeof v === "string" ? v.trim() : v);
+    status = clean(status);
     user_name = clean(user_name);
     user_mail = clean(user_mail);
     user_phone = clean(user_phone);
@@ -30,23 +23,62 @@ const storeOrder = (req, res) => {
     user_city = clean(user_city);
     user_address = clean(user_address);
 
-    //controllo che i dati vengano inseriti
-    if (user_name == "" || user_mail == "" || user_phone == "" || user_surname == "" || user_city == "" || user_address == "" || total_price == 0) return res.status(500).json({ error: "Riempi tutti i campi" });
+    // validazione niente capi vuoti 
+    if (
+        user_name == "" || user_mail == "" || user_phone == "" ||
+        user_surname == "" || user_city == "" || user_address == "" ||
+        total_price == 0
+    ) {
+        return res.status(500).json({ error: "Riempi tutti i campi" });
+    }
+
+    // 1) inserisco ordine
+    const sqlOrder = `
+    INSERT INTO orders
+      (status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+    connection.query(
+        sqlOrder, [status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address],
+        (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: `Errore nella query di inserimento ordine: ${err}` });
+            }
+
+            const orderId = result.insertId;
 
 
-    //query
-    const sql = "INSERT INTO orders (status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            // 2) inserisco righe nella tabella ponte (una INSERT per riga)
+            const sqlItem = `
+        INSERT INTO products_has_orders
+          (products_id, orders_id, quantity, price, product_name)
+        VALUES (?, ?, ?, ?, ?) `;
 
-    //eseguo la query
-    connection.query(sql, [status, total_price, user_name, user_mail, user_phone, user_surname, user_city, user_address, ], (err, result) => {
-        if (err) return res.status(500).json({ error: `Errore nella query di inserimento ordine: ${err}` });
+            let i = 0;
+            const next = () => {
+                if (i >= items.length) {
+                    return res.status(201).json({
+                        result: true,
+                        message: "Ordine creato",
+                        order_id: orderId
+                    });
+                }
+                const it = items[i++];
+                connection.query(
+                    sqlItem, [it.products_id, orderId, it.quantity, it.price, clean(it.product_name)],
+                    (err) => {
+                        if (err) {
+                            // segnalo l’errore
+                            return res.status(500).json({ error: `Errore inserimento riga prodotto: ${err}` });
+                        }
+                        next();
+                    }
+                );
+            };
+            next();
+        }
+    );
+};
 
-        res.status(201).json({ result: true, message: `Inserimento avvenuto con successo` });
-    })
-
-}
-
-
-module.exports = {
-    storeOrder,
-}
+module.exports = { storeOrder };
