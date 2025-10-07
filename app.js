@@ -12,6 +12,8 @@ const port = process.env.PORT
 
 //importo router
 const productRouter = require("./routers/productRouter.js")
+const notFound = require("./middleware/notFound");
+
 
 //dico ad express di utilizzare public
 app.use(express.static('public'));
@@ -29,6 +31,10 @@ app.use(cors({
 
 //dico all'app di utilizzare il router
 app.use("/products", productRouter);
+
+//middleware se nessuna rotta ha risposto
+app.use(notFound);
+
 
 
 //dico all'app di rimanere in ascolto

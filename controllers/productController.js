@@ -46,7 +46,7 @@ const storeOrder = (req, res) => {
 
 
     //recupero i dati della form
-    const {
+    let {
         status,
         total_price,
         user_name,
@@ -56,6 +56,18 @@ const storeOrder = (req, res) => {
         user_city,
         user_address,
     } = req.body;
+
+    //  rimuovo spazi laterali dai campi stringa
+    function clean(value) {
+        return typeof value === "string" ? value.trim() : "";
+    }
+
+    user_name = clean(user_name);
+    user_mail = clean(user_mail);
+    user_phone = clean(user_phone);
+    user_surname = clean(user_surname);
+    user_city = clean(user_city);
+    user_address = clean(user_address);
 
     //controllo che i dati vengano inseriti
     if (user_name == "" || user_mail == "" || user_phone == "" || user_surname == "" || user_city == "" || user_address == "" || total_price == 0) return res.status(500).json({ error: "Riempi tutti i campi" });
