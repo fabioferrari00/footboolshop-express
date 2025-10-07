@@ -21,4 +21,7 @@ router.post("/", productController.store);
 //Elimina prodotto by id 
 router.delete("/:id", productController.destroy);
 
+//modifica prodotto per id
+router.put('/:id', productController.update)
+
 module.exports = router;

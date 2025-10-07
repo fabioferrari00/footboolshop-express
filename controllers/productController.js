@@ -82,10 +82,39 @@ const destroy = (req, res) => {
     });
 };
 
+//Update per id
+const update = (req, res) => {
+
+    const { id } = req.params;
+
+    let {
+        name,
+        image_url,
+        sex,
+        price,
+        slug,
+        arrival_date,
+        description
+    } = req.body;
+
+    const sql = "UPDATE products SET name = ?, image_url = ?, sex = ?, price = ?, slug = ?, arrival_date = ?, description = ? WHERE id = ?";
+    arrayParams = [name, image_url, sex, price, slug, arrival_date, description];
+    arrayParams.push(id);
+
+    connection.query(sql, arrayParams, (err, result) => {
+        if (err) return res.status(500).json({ error: `Errore nella modifica del prodotto: ${err}` });
+
+        res.status(200).json({ message: "Libro modificato con successo" });
+    })
+
+
+}
+
 
 module.exports = {
     index,
     show,
     store,
-    destroy
+    destroy,
+    update
 }
