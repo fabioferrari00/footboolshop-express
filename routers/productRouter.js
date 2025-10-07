@@ -11,10 +11,8 @@ const productController = require("../controllers/productController.js");
 //index
 router.get("/", productController.index);
 
-router.get("/search", productController.search);
-
 //show by id 
-router.get("/:id", productController.show)
+router.get("/:slug", productController.show);
 
 //storeOrder
 router.post("/add-order", productController.storeOrder)

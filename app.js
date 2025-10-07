@@ -35,8 +35,6 @@ app.use("/products", productRouter);
 //middleware se nessuna rotta ha risposto
 app.use(notFound);
 
-
-
 //dico all'app di rimanere in ascolto
 app.listen(port, () => {
     console.log(`Server in ascolto alla porta: ${process.env.PORT}`)

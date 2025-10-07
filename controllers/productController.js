@@ -19,16 +19,16 @@ const index = (req, res) => {
 
 // show singolo prodotto con il nome squadra
 const show = (req, res) => {
-    const id = req.params.id;
+    const slug = req.params.slug;
     const sql = `
-         SELECT p.*, t.team_name, s.size
+        SELECT p.*, t.team_name, s.size
         FROM products p
         LEFT JOIN teams t ON t.products_id = p.id
-		LEFT JOIN sizes s ON s.products_id = p.id
-        WHERE p.id = ?
+        LEFT JOIN sizes s ON s.products_id = p.id
+        WHERE p.slug = ?
     `;
 
-    connection.query(sql, [id], (err, results) => {
+    connection.query(sql, [slug], (err, results) => {
         if (err) {
             return res.status(500).json({ error: `Errore nella query: ${err}` });
         }
@@ -36,8 +36,9 @@ const show = (req, res) => {
             return res.status(404).json({ error: "Prodotto non trovato" });
         }
         res.send(results[0]);
-    })
-}
+    });
+};
+
 
 //store ordini
 const storeOrder = (req, res) => {
@@ -85,30 +86,10 @@ const storeOrder = (req, res) => {
 
 }
 
-// ricerca prodotti per nome squadra
-const search = (req, res) => {
-    const search = req.query.search || "";
-
-    const sql = `
-      SELECT p.*, t.team_name, s.size
-      FROM products p
-      JOIN teams t ON t.products_id = p.id
-      JOIN sizes s ON s.products_id = p.id
-      WHERE t.team_name LIKE ?
-    `;
-
-    connection.query(sql, [`%${search}%`], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: `Errore nella query: ${err}` });
-        }
-        res.json(results);
-    });
-};
 
 
 module.exports = {
     index,
     show,
     storeOrder,
-    search
 }
