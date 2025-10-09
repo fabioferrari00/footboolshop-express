@@ -13,6 +13,7 @@ const port = process.env.PORT;
 //importo router
 const productRouter = require("./routers/productRouter.js")
 const ordersRouter = require("./routers/ordersRouter.js");
+const discountRouter = require("./routers/discountRounter");
 const notFound = require("./middleware/notFound");
 
 
@@ -33,6 +34,7 @@ app.use(cors({
 //dico all'app di utilizzare il router
 app.use("/products", productRouter);
 app.use("/orders", ordersRouter);
+app.use("/discounts", discountRouter);
 
 //middleware se nessuna rotta ha risposto
 app.use(notFound);
