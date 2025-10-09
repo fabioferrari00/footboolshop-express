@@ -104,7 +104,7 @@ const update = (req, res) => {
     connection.query(sql, arrayParams, (err, result) => {
         if (err) return res.status(500).json({ error: `Errore nella modifica del prodotto: ${err}` });
 
-        res.status(200).json({ message: "Libro modificato con successo" });
+        res.status(200).json({ message: "modificato con successo" });
     })
 
 
