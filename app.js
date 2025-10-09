@@ -1,4 +1,3 @@
-
 //importo express
 const express = require("express");
 
@@ -13,6 +12,9 @@ const port = process.env.PORT;
 
 //importo router
 const productRouter = require("./routers/productRouter.js")
+const ordersRouter = require("./routers/ordersRouter.js");
+const notFound = require("./middleware/notFound");
+
 
 //dico ad express di utilizzare public
 app.use(express.static('public'));
@@ -24,8 +26,16 @@ app.get("/", (req, res) => {
     res.send("Rotta base del sito")
 })
 
+app.use(cors({
+    origin: process.env.FE_APP
+}));
+
 //dico all'app di utilizzare il router
 app.use("/products", productRouter);
+app.use("/orders", ordersRouter);
+
+//middleware se nessuna rotta ha risposto
+app.use(notFound);
 
 //dico all'app di rimanere in ascolto
 app.listen(port, () => {
