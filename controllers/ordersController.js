@@ -32,6 +32,10 @@ const storeOrder = (req, res) => {
         return res.status(500).json({ error: "Riempi tutti i campi" });
     }
 
+    if (total_price == null || Number(total_price) <= 0) {
+        return res.status(400).json({ error: "total_price deve essere maggiore di 0." });
+    }
+
     // 1) inserisco ordine
     const sqlOrder = `
     INSERT INTO orders
