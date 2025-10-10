@@ -49,6 +49,34 @@ const show = (req, res) => {
     });
 };
 
+// show singolo prodotto by id
+const showById = (req, res) => {
+    const productId = req.params.id;
+    const sql = `
+      SELECT 
+        p.*, 
+        t.id AS team_id, 
+        t.team_name, 
+        s.id AS size_id, 
+        s.size
+      FROM products p
+      LEFT JOIN teams t ON t.products_id = p.id
+      LEFT JOIN sizes s ON s.products_id = p.id
+      WHERE p.id = ?
+    `;
+
+    connection.query(sql, [productId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: `Errore nella query: ${err}` });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: "Prodotto non trovato" });
+        }
+        res.send(results[0]);
+    });
+};
+
+
 // Aggiungi un prodotto 
 const store = (req, res) => {
     let {
@@ -150,6 +178,7 @@ const update = (req, res) => {
 module.exports = {
     index,
     show,
+    showById,
     store,
     destroy,
     update

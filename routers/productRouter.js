@@ -14,7 +14,9 @@ router.get("/", productController.index);
 
 //show by slug
 router.get("/:slug", productController.show);
+
 //show by id
+router.get("/id/:id", productController.showById);
 
 
 // Aggiuni un prodotto
