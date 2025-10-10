@@ -36,7 +36,7 @@ app.use(cors({
 app.use("/products", productRouter);
 app.use("/orders", ordersRouter);
 app.use("/discounts", discountRouter);
-app.use("/products/filtered", discountRouter);
+app.use("/search", filteredProductsRouter);
 
 //middleware se nessuna rotta ha risposto
 app.use(notFound);

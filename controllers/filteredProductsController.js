@@ -29,6 +29,7 @@ WHERE 1=1`;
     if (err) {
       return res.status(500).json({ error: `Errore nella query: ${err}` });
     }
+    console.log(results);
     res.status(200).json(results);
   }
   );
