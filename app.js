@@ -14,6 +14,7 @@ const port = process.env.PORT;
 const productRouter = require("./routers/productRouter.js")
 const ordersRouter = require("./routers/ordersRouter.js");
 const discountRouter = require("./routers/discountRounter");
+const filteredProductsRouter = require("./routers/filteredProductsRouter");
 const notFound = require("./middleware/notFound");
 
 
@@ -35,6 +36,7 @@ app.use(cors({
 app.use("/products", productRouter);
 app.use("/orders", ordersRouter);
 app.use("/discounts", discountRouter);
+app.use("/search", filteredProductsRouter);
 
 //middleware se nessuna rotta ha risposto
 app.use(notFound);
