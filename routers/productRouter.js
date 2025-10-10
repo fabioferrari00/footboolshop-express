@@ -12,8 +12,10 @@ const productController = require("../controllers/productController.js");
 //index
 router.get("/", productController.index);
 
-//show by id 
+//show by slug
 router.get("/:slug", productController.show);
+//show by id
+
 
 // Aggiuni un prodotto
 router.post("/", productController.store);

@@ -16,6 +16,8 @@ const ordersRouter = require("./routers/ordersRouter.js");
 const discountRouter = require("./routers/discountRounter");
 const filteredProductsRouter = require("./routers/filteredProductsRouter");
 const notFound = require("./middleware/notFound");
+const usersRouter = require("./routers/usersRouter.js");
+
 
 
 //dico ad express di utilizzare public
@@ -37,6 +39,8 @@ app.use("/products", productRouter);
 app.use("/orders", ordersRouter);
 app.use("/discounts", discountRouter);
 app.use("/search", filteredProductsRouter);
+app.use("/users", usersRouter);
+
 
 //middleware se nessuna rotta ha risposto
 app.use(notFound);
