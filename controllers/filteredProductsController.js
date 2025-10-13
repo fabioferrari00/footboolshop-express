@@ -36,9 +36,48 @@ WHERE 1=1`;
 }
 
 
+const indexSizes = (req, res) => {
+  let sql = `SELECT * FROM sizes;`
+  connection.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: `Errore nella query: ${err}` });
+    }
+    console.log(results);
+    res.status(200).json(results);
+  });
+}
+
+
+const indexTeamName = (req, res) => {
+  let sql = `SELECT * FROM teams;`
+  connection.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: `Errore nella query: ${err}` });
+    }
+    console.log(results);
+    res.status(200).json(results);
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = {
 
   indexFilter
+  indexFilter,
+  indexSizes,
+  indexTeamName
+
 
 };

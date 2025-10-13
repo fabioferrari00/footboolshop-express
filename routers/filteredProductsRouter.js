@@ -4,4 +4,7 @@ const filteredProductsController = require("../controllers/filteredProductsContr
 
 // Definiamo la rotta per filtrare i prodotti
 router.get("/", filteredProductsController.indexFilter);
+router.get("/sizes", filteredProductsController.indexSizes);
+router.get("/teamName", filteredProductsController.indexTeamName);
+
 module.exports = router;
