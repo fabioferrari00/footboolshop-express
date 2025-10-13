@@ -73,8 +73,6 @@ const indexTeamName = (req, res) => {
 
 
 module.exports = {
-
-  indexFilter
   indexFilter,
   indexSizes,
   indexTeamName
