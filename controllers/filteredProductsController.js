@@ -59,23 +59,8 @@ const indexTeamName = (req, res) => {
   });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
   indexFilter,
   indexSizes,
   indexTeamName
-
-
 };
